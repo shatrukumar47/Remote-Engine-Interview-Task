@@ -9,8 +9,6 @@
 ##
 [backend](https://remoteengine.onrender.com/)
 
-## Video Walkthrough of the project
-
 ## Features
 
 - Signup for Clients
@@ -68,6 +66,22 @@ POST /client/register - Register client - req.body({companyName, email, password
 
 ### Frontend
  React | ChakraUI | Axios
+
+
+## Snaps
+### Home
+![1](https://github.com/shatrukumar47/Remote-Engine-Interview-Task/assets/123942835/fca30d4f-f6a6-48df-802e-3dbdc54a93c6)
+
+### Register as Developer
+![2](https://github.com/shatrukumar47/Remote-Engine-Interview-Task/assets/123942835/f9912367-1c34-43b6-88d4-3d3d6f0d6d25)
+
+### Register as Client
+![3](https://github.com/shatrukumar47/Remote-Engine-Interview-Task/assets/123942835/c87acd1c-6017-4384-afbe-a009459aa118)
+
+
+
+
+
 
 
 
