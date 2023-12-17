@@ -37,17 +37,19 @@ const registerDeveloper = async (req, res)=>{
 
 //Add educational experience
 const addEducationalExperience  = async (req, res)=>{
-    const educationalExperience = req.body.educationalExperience || []
+ 
+    const educationdetails = req.body.educationalExperience || []
     try {
+        let developer  = await DeveloperModel.findOne({_id: req.body.userID});
 
-        const developer = await DeveloperModel.findOne({email: req.body.email})
         if(!developer){
             return res.status(200).json({ message: 'Developer not found', action: false });
         }
 
-        //add education details
-        developer.educationalExperiences.push(...educationalExperience);
-        await developer.save();
+        const  educationalExperience = [...developer.educationalExperience, ...educationdetails];
+
+        await DeveloperModel.findByIdAndUpdate({_id: req.body.userID}, {educationalExperience})
+       
 
         res.status(200).json({ message: 'Educational experience added successfully', action: true });
         
@@ -59,17 +61,19 @@ const addEducationalExperience  = async (req, res)=>{
 
 // Add professional experience
 const addProfessionalExperience = async (req, res)=>{
-    const professionalExperience  = req.body.professionalExperience  || []
+    const professionalDetails  = req.body.professionalExperience  || []
     try {
 
-        const developer = await DeveloperModel.findOne({email: req.body.email})
+        let developer  = await DeveloperModel.findOne({_id: req.body.userID});
+
         if(!developer){
             return res.status(200).json({ message: 'Developer not found', action: false });
         }
 
-        //add education details
-        developer.professionalExperience.push(...professionalExperience );
-        await developer.save();
+        const  professionalExperience = [...developer.professionalExperience, ...professionalDetails];
+    
+        console.log(professionalExperience)
+        await DeveloperModel.findByIdAndUpdate({_id: req.body.userID}, {professionalExperience})
 
         res.status(200).json({ message: 'Professional experience added successfully', action: true });
         

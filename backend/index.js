@@ -20,12 +20,12 @@ app.get("/", (req, res)=>{
     res.send("Welcome to Remote Engine Backend")
 })
 
-// app.listen(PORT, async ()=>{
-//     try {
-//         await connection;
-//         console.log(`Server is live at Port ${PORT}`);
-//         console.log("Connected to DB")
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
+app.listen(PORT, async ()=>{
+    try {
+        await connection;
+        console.log(`Server is live at Port ${PORT}`);
+        console.log("Connected to DB")
+    } catch (error) {
+        console.log(error)
+    }
+})

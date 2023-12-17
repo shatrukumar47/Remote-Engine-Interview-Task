@@ -7,24 +7,30 @@ require("dotenv").config();
 //Initial Registration of Client
 const registerClient = async (req, res)=>{
     try {
-        const { companyName, email } = req.body;
+        const { companyName, email, password } = req.body;
     
-        // Check if the client with the given email already exists
         const existingClient = await ClientModel.findOne({ email });
         if (existingClient) {
-          return res.status(400).json({ message: 'Client already exists with this email.' });
+          return res.status(200).json({ message: 'Client already exists', action: false });
         }
     
-        // Create a new client instance
-        const newClient = new ClientModel({ companyName, email });
-    
-        // Save the client to the database
-        await newClient.save();
-    
-        res.status(201).json({ message: 'Client registered successfully' });
+        //password hashing
+        bcrypt.hash(password, +process.env.saltRounds, async (err, hash)=>{
+          if(err){
+              res.status(400).send({error: err});
+          }
+          
+          //new client
+          const newClient  = new ClientModel({companyName, email, password: hash});
+          await newClient.save();
+
+          //jwt accessToken
+          const accessToken = jwt.sign({userID: newClient._id, email: email}, process.env.JWT_SECRET)
+
+          res.status(200).json({ message: 'Registered successfully', accessToken ,action: true });
+      })
       } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(400).json({ error: error.message});
       }
 }
 
