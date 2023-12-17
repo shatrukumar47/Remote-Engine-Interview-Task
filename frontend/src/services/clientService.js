@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const clientAPI = "http://localhost:8080/client"
+const clientAPI = "https://remoteengine.onrender.com/client"
 
 //registeration
 export const registerClient = async (payload)=>{

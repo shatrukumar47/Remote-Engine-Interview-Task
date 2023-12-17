@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getItemLS } from '../utils/localStorage';
 
-const developerAPI = "http://localhost:8080/developer"
+const developerAPI = "https://remoteengine.onrender.com/developer"
 
 //registeration
 export const registerDeveloper = async (payload)=>{

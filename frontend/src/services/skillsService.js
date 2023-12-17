@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const skillsAPI = "http://localhost:8080/skills"
+const skillsAPI = "https://remoteengine.onrender.com/skills"
 
 export const getAllSkills = async ()=>{
     try {
