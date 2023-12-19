@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputRightElement, Text, VStack, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { isPasswordValid, isValidEmail } from '../utils/validators';
+import {  isPasswordValid, isValidEmail } from '../utils/validators';
 import { registerClient } from '../services/clientService';
 
 const initialState = {
@@ -12,6 +12,7 @@ const initialState = {
 const ClientSignup = () => {
     const [client, setClient] = useState(initialState);
     const [emailError, setEmailError] = useState("");
+    const [loading, setLoading] = useState(false);
     const [passError, setPassError] = useState("");
 
     //show-hide password
@@ -28,11 +29,11 @@ const ClientSignup = () => {
             const err = isValidEmail(value) ? "" : "enter valid email address";
             setEmailError(err);
         }
-      
+
         if(name === "password"){
             const err = isPasswordValid(value) ? "" : "must contain one uppercase, one number, one special character";
             setPassError(err);
-        }
+          }
 
         setClient((prev)=>{
             return { ...prev, [name]: value}
@@ -40,9 +41,11 @@ const ClientSignup = () => {
     }
 
     const handleSignup = ()=>{
-        if(client.companyName && !emailError && !passError){
+        if(client.companyName && !emailError && client.password){
+            setLoading(true)
             registerClient(client).then((res)=>{
                 if(res.data.action){
+                    setLoading(false)
                     toast({
                         title: `Registered successfully`,
                         position: "top",
@@ -52,16 +55,17 @@ const ClientSignup = () => {
                     });
                     setClient(initialState)
                 }
-
-                if(!res.data.action){
+            }).catch((err)=>{
+                setLoading(false)
+                if(err.response.status === 400){
                     toast({
-                        title: res.data.message,
-                        position: "top",
-                        isClosable: true,
-                        duration: 1000,
-                        status: "error",
-                    });
-                }
+                    title: err.response.data.message,
+                    position: "top",
+                    isClosable: true,
+                    duration: 1000,
+                    status: "error",
+                });
+            }
             })
         }
     }
@@ -70,6 +74,7 @@ const ClientSignup = () => {
 
   return (
     <Box width={"400px"} margin={"40px auto"} shadow={"lg"} padding={"20px 10px"}>
+        <Text fontSize={"25px"} fontWeight={"bold"} color={"green"} textAlign={"center"} margin={"20px"}>Create client account</Text>
       <form>
         <VStack>
             <FormControl>
@@ -80,7 +85,7 @@ const ClientSignup = () => {
             <FormControl isInvalid={emailError}>
                 <FormLabel>Email</FormLabel>
                 <Input type='email' placeholder='Email' name='email' value={client?.email} onChange={handleChange}  />
-                {true && <FormErrorMessage>{emailError}</FormErrorMessage>} 
+                {emailError && <FormErrorMessage>{emailError}</FormErrorMessage>} 
             </FormControl>
 
             <FormControl isInvalid={passError}>
@@ -93,10 +98,10 @@ const ClientSignup = () => {
                         </Button>
                     </InputRightElement>
                 </InputGroup>
-                {passError && <FormErrorMessage>{passError}</FormErrorMessage>} 
+                {passError && <FormErrorMessage textAlign={"left"}>{passError}</FormErrorMessage>} 
             </FormControl>
 
-            <Button onClick={handleSignup} colorScheme='green' marginTop={"30px"}>Signup</Button>
+            <Button isLoading={loading} isDisabled={loading} onClick={handleSignup} colorScheme='green' marginTop={"30px"}>Signup</Button>
         </VStack>
       </form>
     </Box>

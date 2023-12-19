@@ -1,11 +1,9 @@
-import { Box, Button, HStack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, HStack, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
-import ProfessionalExpForm from './ProfessionalExpForm';
 import { getAllSkills } from '../services/skillsService';
-import { isProfessionalExperiencesValid, mapSkillsInProfessionalExperiences } from '../utils/validators';
-import { addProfessionalExperience } from '../services/developerService';
-import { useNavigate } from 'react-router-dom';
-import { deleteItemLS } from '../utils/localStorage';
+import ProfessionalExpForm from './ProfessionalExpForm';
+import {isProfessionalExperiencesValid, mapSkillsInProfessionalExperiences} from "../utils/validators"
+import {addProfessionalExperience} from "../services/developerService"
 
 
 const initialState = {
@@ -13,25 +11,25 @@ const initialState = {
     techStack: '',
     skills: [],
     duration: '',
-  };
+};
 
-const DeveloperForm3 = ({goToNext, goToPrevious}) => {
+const EditDeveloperProfessExp = ({developer}) => {
     const [professionalExperiences, setProfessionalExperiences] = useState([initialState]);
     const [skillData, setSkillData] = useState([]);
     const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(false);
 
-     //toast feature
-     const toast = useToast()
+    //toast feature
+    const toast = useToast()
 
-     //navigate
-     const navigate = useNavigate()
-
-     useEffect(()=>{
+    useEffect(()=>{
         getAllSkills().then((res)=>{
            setSkillData(res.data)
         })
-    }, [])
+
+        setProfessionalExperiences(developer?.professionalExperience)
+    }, [developer])
+
 
     const handleAddMore = ()=>{
         setSkills([])
@@ -73,9 +71,6 @@ const DeveloperForm3 = ({goToNext, goToPrevious}) => {
                         duration: 1000,
                         status: "success",
                     });
-                    deleteItemLS("accessToken")
-                    goToNext()
-                    navigate("/")
                 }
             }).catch((err)=>{
                 setLoading(false)
@@ -103,23 +98,21 @@ const DeveloperForm3 = ({goToNext, goToPrevious}) => {
 
 
   return (
-   <Box>
-        <Text fontWeight={"semibold"} fontSize={"20px"}>Professional Experience</Text>
-        <Text color={"gray"} >Fill out the details carefully!</Text>
+    <Box>
         <Box>
             {
-                professionalExperiences.map((item, index)=>{
+                professionalExperiences?.map((item, index)=>{
                     return <ProfessionalExpForm key={index} item={item} handleAddMore={handleAddMore} index={index} length={professionalExperiences.length} handleRemove={handleRemove} onChange={handleChange} skillData ={skillData} skills={skills} setSkills={setSkills} />
                 })
             }
         </Box>
 
         <HStack justifyContent={"center"} borderTop={"1px solid grey"} marginTop={"20px"}>
-            <Button isLoading={loading} isDisabled={loading} colorScheme='blue' marginTop={"10px"} onClick={handleSubmitDetails}>Submit Details</Button>
+            <Button isLoading={loading} isDisabled={loading} colorScheme='orange' marginTop={"10px"} onClick={handleSubmitDetails}>Update Professional Details</Button>
         </HStack>
 
     </Box>
   )
 }
 
-export default DeveloperForm3
+export default EditDeveloperProfessExp

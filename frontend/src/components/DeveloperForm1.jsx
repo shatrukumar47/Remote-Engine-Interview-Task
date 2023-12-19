@@ -21,6 +21,7 @@ const DeveloperForm1 = ({goToNext}) => {
     const [emailError, setEmailError] = useState("");
     const [passError, setPassError] = useState("");
     const [phoneError, setPhoneError] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
     //show-hide password
@@ -87,8 +88,10 @@ const DeveloperForm1 = ({goToNext}) => {
         if(user.firstName && user.lastName && !emailError && !passError && !phoneError && skills.length >= 1){
             let skillsWithSkillIDs = skills.map((item)=> item._id);
             let developer = {...user, skills: skillsWithSkillIDs};
+            setLoading(true);
             registerDeveloper(developer).then((res)=>{
                 if(res.data.action){
+                    setLoading(false)
                     setItemLS("accessToken", res.data.accessToken)
                     toast({
                         title: `Registered successfully`,
@@ -99,10 +102,11 @@ const DeveloperForm1 = ({goToNext}) => {
                     });
                     goToNext()
                 }
-
-                if(!res.data.action){
-                    toast({
-                        title: res.data.message,
+            }).catch((err)=> {
+                setLoading(false)
+                if(err.response.status === 400){
+                        toast({
+                        title: err.response.data.message,
                         position: "top",
                         isClosable: true,
                         duration: 1000,
@@ -186,7 +190,7 @@ const DeveloperForm1 = ({goToNext}) => {
                 </Flex>
             </Box>
 
-            <Button onClick={handleRegister} colorScheme='green' marginTop={"30px"}>Register & Continue</Button>
+            <Button onClick={handleRegister} isLoading={loading} isDisabled={loading} colorScheme='green' marginTop={"30px"}>Register & Continue</Button>
         </VStack>
       </form>
     </Box>

@@ -1,8 +1,12 @@
 import { Box,  Button,  Flex,  FormControl, FormLabel, HStack, Input, Select, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const ProfessionalExpForm = ({item, handleAddMore, onChange, handleRemove, index, length, skillData, skills, setSkills}) => {
-    
+
+    useEffect(()=>{
+        setSkills(item?.skills)
+    }, [skills, item?.skills])
+
 
     const handleChange = (e) => {
         onChange(e, index);

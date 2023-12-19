@@ -1,19 +1,25 @@
-import React, { useState } from 'react'
-import EducationExpForm from './EducationExpForm'
-import { Box, Button, HStack, Text, useToast } from '@chakra-ui/react'
-import { isEducationalExperiencesValid } from '../utils/validators'
-import { addEducationalExperience } from '../services/developerService'
+import { Box, Button, HStack, useToast } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react'
+import EducationExpForm from './EducationExpForm';
+import { isEducationalExperiencesValid } from '../utils/validators';
+import { addEducationalExperience } from '../services/developerService';
+
 
 const initialState = {
     degreeName: '', schoolName: '', duration: ''
 }
 
-const DeveloperForm2 = ({goToNext, goToPrevious}) => {
+const EditDeveloperEdExperience = ({developer}) => {
+
     const [educationalExperiences, setEducationalExperiences] = useState([initialState]);
     const [loading, setLoading] = useState(false);
 
-     //toast feature
-     const toast = useToast()
+    //toast feature
+    const toast = useToast()
+
+    useEffect(()=>{
+        setEducationalExperiences(developer?.educationalExperience)
+    }, [developer])
 
     const handleAddMore = ()=>{
         setEducationalExperiences([...educationalExperiences, { degreeName: '', schoolName: '', duration: '' }])
@@ -46,7 +52,6 @@ const DeveloperForm2 = ({goToNext, goToPrevious}) => {
                         duration: 1000,
                         status: "success",
                     });
-                    goToNext()
                 }
             }).catch((err)=>{
                 setLoading(false)
@@ -73,10 +78,8 @@ const DeveloperForm2 = ({goToNext, goToPrevious}) => {
 
 
   return (
-    <Box>
-        <Text fontWeight={"semibold"} fontSize={"20px"}>Educational Experience</Text>
-        <Text color={"gray"} >Fill out the details carefully!</Text>
-        <Box>
+    <Box width={"100%"}>
+        <Box width={"100%"}>
             {
                 educationalExperiences.map((item, index)=>{
                     return <EducationExpForm key={index} item={item} handleAddMore={handleAddMore} index={index} length={educationalExperiences.length} handleRemove={handleRemove} onChange={handleChange} />
@@ -84,12 +87,12 @@ const DeveloperForm2 = ({goToNext, goToPrevious}) => {
             }
         </Box>
 
-        <HStack justifyContent={"center"} borderTop={"1px solid grey"} marginTop={"20px"}>
-            <Button isLoading={loading} isDisabled={loading} colorScheme='blue' marginTop={"10px"} onClick={handleSubmitDetails}>Submit Details</Button>
+        <HStack width={"100%"} justifyContent={"center"} borderTop={"1px solid grey"} marginTop={"20px"}>
+            <Button isLoading={loading} isDisabled={loading} colorScheme='orange' marginTop={"10px"} onClick={handleSubmitDetails}>Update Education Details</Button>
         </HStack>
 
     </Box>
   )
 }
 
-export default DeveloperForm2
+export default EditDeveloperEdExperience

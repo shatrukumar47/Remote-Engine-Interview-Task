@@ -9,9 +9,9 @@ const EducationExpForm = ({item, handleAddMore, onChange, handleRemove, index, l
     };
 
   return (
-    <Box>  
+    <Box width={"100%"}>  
         <form>
-            <VStack marginTop={"20px"}>
+            <VStack width={"100%"} marginTop={"20px"}>
                 <FormControl>
                     <FormLabel>Degree</FormLabel>
                     <Input type='text' placeholder='Degree name' name='degreeName' value={item?.degreeName} onChange={handleChange}  />
