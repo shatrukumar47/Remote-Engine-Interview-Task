@@ -37,9 +37,20 @@ npm install
 npm run start
 ```
 
-## API Endpoints
+## Credentials
 
+### Developer credential : 
+- email: abc@gmail.com
+- password: Abc@123
+  
+### Client credential : 
+- email: masai@gmail.com
+- password: Masai@123
+
+## API Endpoints
+***api : https://remoteengine.onrender.com/***
 ### Skill Route
+
 ```
 GET /skills/ - Retrieve all skills (no authentication required)
 POST /skills/add - Add new skill (authentication required) - req.body({name})
@@ -77,6 +88,12 @@ POST /client/register - Register client - req.body({companyName, email, password
 
 ### Register as Client
 ![3](https://github.com/shatrukumar47/Remote-Engine-Interview-Task/assets/123942835/c87acd1c-6017-4384-afbe-a009459aa118)
+
+### Developer Profile Page
+![4](https://github.com/shatrukumar47/Remote-Engine-Interview-Task/assets/123942835/0333fef1-165d-43c6-8898-75bc57d0dc1d)
+
+### Update Developer Details
+![5](https://github.com/shatrukumar47/Remote-Engine-Interview-Task/assets/123942835/cfce91bb-ca59-4e76-a84e-2723fdad436e)
 
 
 
